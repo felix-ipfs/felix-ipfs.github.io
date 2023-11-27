@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Felix Project</title>
+    </head>
+    <body>
+        <p>Redirecting ...</p>
+        <script>
+            const api_adr = "https://json.extendsclass.com/bin/e7438b34bea2";
+            var redirect_url = null;
+            var retries = 5;
+            var timeout = 2500;
+            function getRequest(url) {
+                var xhr = new XMLHttpRequest();
+                xhr.timeout = timeout;
+                xhr.open("GET", url, true);
+                xhr.send();
+                return xhr;
+            }
+            function redirect() {
+                let req = getRequest(api_adr);
+                req.onreadystatechange = function () {
+                    if (req.readyState === 4 && req.status === 200) {
+                        let jsonResponse = JSON.parse(req.response);
+                        redirect_url = jsonResponse["url"];
+                        window.location.href = redirect_url;
+                    }
+                    else {
+                        if (retries > 0) {
+                            retries = retries - 1;
+                            setTimeout(function (){if (!redirect_url) {redirect();}}, timeout + 1000);
+                        }
+                        else {
+                            document.body.innerHTML = "Nothing!";
+                        }
+                    }
+                }  
+            }
+            redirect();
+        </script>
+        <script type="text/javascript">
+            var sc_project=12849068;
+            var sc_invisible=1;
+            var sc_security="3be05593";
+        </script>
+        <script type="text/javascript" src="https://www.statcounter.com/counter/counter.js" async></script>
+        <noscript><div class="statcounter"><a title="Web Analytics Made Easy -
+            Statcounter" href="https://statcounter.com/" target="_blank"><img
+            class="statcounter" src="https://c.statcounter.com/12849068/0/3be05593/1/"
+            alt="Web Analytics Made Easy - Statcounter"
+            referrerPolicy="no-referrer-when-downgrade"></a></div>
+        </noscript>
+    </body>
+</html>
